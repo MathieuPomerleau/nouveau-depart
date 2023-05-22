@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { Rubik } from "next/font/google";
 
-const rubik = Rubik({ subsets: ["latin"] });
+const rubik = Rubik({ subsets: ["latin"], display: "swap" });
 
 export const metadata = {
     title: "Nouveau Départ",
@@ -35,14 +35,12 @@ export default async function RootLayout({
     }
 
     return (
-        <html lang={locale}>
-            <body className={`min-h-screen ${rubik.className}`}>
+        <html lang={locale} className={rubik.className}>
+            <body>
                 <NextIntlClientProvider locale={locale} messages={messages}>
-                    <div className="flex min-h-screen flex-col max-w-[72rem] mx-auto">
-                        <header className="sticky top-0 z-40 w-full">
-                            <div className="container flex h-24 items-center space-x-4 sm:justify-between sm:space-x-0">
-                                <MainNav items={navItems} />
-                            </div>
+                    <div className="min-h-screen max-w-[72rem] mx-auto">
+                        <header className="sticky h-24 top-0 z-40 py-4">
+                            <MainNav items={navItems} />
                         </header>
                         <div className="container flex-1">{children}</div>
                     </div>
