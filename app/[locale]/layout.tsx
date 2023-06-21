@@ -1,8 +1,9 @@
-import { MainNav } from "@/components/main.nav";
-import "./../globals.css";
-import { NextIntlClientProvider } from "next-intl";
-import { notFound } from "next/navigation";
 import { Rubik } from "next/font/google";
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+
+import { MainNav } from "@/components/ui/main.nav";
+import { getCurrentScheme } from "@/utils/color.scheme";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -16,35 +17,41 @@ const navItems = [
     { textKey: "contact-us", href: "/contact-us" },
 ];
 
-export function generateStaticParams() {
-    return [{ locale: "en" }, { locale: "fr" }];
-}
-
-export default async function RootLayout({
+export default async function LocaleLayout({
     children,
-    params: { locale },
+    params,
 }: {
     children: React.ReactNode;
     params: { locale: string };
 }) {
+    const scheme = await getCurrentScheme();
+
     let messages;
     try {
-        messages = (await import(`../../messages/${locale}.json`)).default;
+        messages = (await import(`../../messages/${params.locale}.json`))
+            .default;
     } catch (error) {
         notFound();
     }
 
     return (
-        <html lang={locale}>
-            <body className={`min-h-screen ${rubik.className}`}>
-                <NextIntlClientProvider locale={locale} messages={messages}>
-                    <div className="flex min-h-screen flex-col max-w-[72rem] mx-auto">
-                        <header className="sticky top-0 z-40 w-full">
-                            <div className="container flex h-24 items-center space-x-4 sm:justify-between sm:space-x-0">
-                                <MainNav items={navItems} />
+        <html lang={params.locale} className={scheme === "dark" ? "dark" : ""}>
+            <body
+                className={`min-h-screen text-font dark:text-font-darkmode dark:bg-dark-tint transition-colors ${rubik.className}`}
+            >
+                <NextIntlClientProvider
+                    locale={params.locale}
+                    messages={messages}
+                >
+                    <div className="flex min-h-screen flex-col">
+                        <header className="sticky top-0 z-40 w-full bg-gradient-to-b from-light-tint/[0.94] dark:from-dark-tint/[0.94] from-70% to-transparent transition-all ">
+                            <div className="container flex h-32 space-x-4 sm:justify-between max-w-[72rem] mx-auto sm:space-x-0">
+                                <MainNav items={navItems} params={params} />
                             </div>
                         </header>
-                        <div className="container flex-1">{children}</div>
+                        <div className="container flex-1 max-w-[84rem] mx-auto">
+                            {children}
+                        </div>
                     </div>
                 </NextIntlClientProvider>
             </body>

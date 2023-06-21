@@ -3,14 +3,18 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { MobileNav } from "@/components/mobile.nav";
+import { MobileNav } from "@/components/ui/mobile.nav";
 import { useTranslations } from "next-intl";
 import { MainNavItem } from "@/types";
+import DarkModeToggle from "@/components/ui/dark.mode.toggle";
+import Logo from "@/components/ui/logo";
+import LocaleToggle from "@/components/ui/locale.toggle";
+import PrimaryButton from "@/components/ui/primary.button";
 
 interface MainNavProps {
     items: MainNavItem[];
     children?: React.ReactNode;
+    params: { locale: string };
 }
 
 export function MainNav({ items, children }: MainNavProps) {
@@ -19,28 +23,31 @@ export function MainNav({ items, children }: MainNavProps) {
     const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
     return (
-        <div className="flex gap-6 md:gap-10">
-            <Link href="/" className="hidden items-center space-x-2 md:flex">
-                {/* Include site logo here */}
-            </Link>
+        <div className="flex flex-1 items-center -mt-8">
+            <Logo />
             {items?.length ? (
-                <nav className="hidden gap-6 md:flex">
+                <nav className="hidden gap-16 flex-1 md:flex md:ml-[8rem]">
                     {items.map((item, index) => (
                         <Link
                             key={index}
                             href={item.href}
-                            className={cn(
-                                "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-                                item.href.startsWith(`/${segment}`)
-                                    ? "text-foreground"
-                                    : "text-foreground/60"
-                            )}
+                            className={`flex items-center text-lg font-medium transition-colors dark:text- sm:text-sm
+                                ${
+                                    item.href.startsWith(`/${segment}`)
+                                        ? "text-foreground"
+                                        : "text-foreground/60"
+                                }`}
                         >
                             {t(item.textKey)}
                         </Link>
                     ))}
                 </nav>
             ) : null}
+            <div className="flex space-x-4">
+                <LocaleToggle />
+                <DarkModeToggle />
+                <PrimaryButton text="Donate" />
+            </div>
             <button
                 className="flex items-center space-x-2 md:hidden"
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
