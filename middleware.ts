@@ -8,3 +8,5 @@ export default createMiddleware({
 export const config = {
     matcher: ["/((?!api|_next|.*\\..*).*)"],
 };
+
+// TODO: Fix translation if we don't refresh

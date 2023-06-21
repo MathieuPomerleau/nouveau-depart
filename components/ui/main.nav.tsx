@@ -23,27 +23,28 @@ export function MainNav({ items, children }: MainNavProps) {
     const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
     return (
-        <div className="flex flex-1 items-center -mt-8">
+        <div className="flex flex-1 md:grid md:grid-rows-1 md:grid-cols-3">
             <Logo />
-            {items?.length ? (
-                <nav className="hidden gap-16 flex-1 md:flex md:ml-[8rem]">
-                    {items.map((item, index) => (
-                        <Link
-                            key={index}
-                            href={item.href}
-                            className={`flex items-center text-lg font-medium transition-colors dark:text- sm:text-sm
-                                ${
-                                    item.href.startsWith(`/${segment}`)
+            <div className="flex flex-1 items-center mx-auto">
+                {items?.length ? (
+                    <nav className="hidden gap-16 md:flex">
+                        {items.map((item, index) => (
+                            <Link
+                                key={index}
+                                href={item.href}
+                                className={`flex items-center transition-colors sm:text-sm
+                                ${item.href.startsWith(`/${segment}`)
                                         ? "text-foreground"
                                         : "text-foreground/60"
-                                }`}
-                        >
-                            {t(item.textKey)}
-                        </Link>
-                    ))}
-                </nav>
-            ) : null}
-            <div className="flex space-x-4">
+                                    }`}
+                            >
+                                {t(item.textKey)}
+                            </Link>
+                        ))}
+                    </nav>
+                ) : null}
+            </div>
+            <div className="hidden md:flex space-x-4 ml-auto">
                 <LocaleToggle />
                 <DarkModeToggle />
                 <PrimaryButton text="Donate" />

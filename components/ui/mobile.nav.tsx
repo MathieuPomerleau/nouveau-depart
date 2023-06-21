@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useLockBody } from "@/hooks/use.lock.body";
 import { MainNavItem } from "@/types";
 import { useTranslations } from "next-intl";
-import Logo from "@/components/ui/logo";
+import LocaleToggle from "./locale.toggle";
+import DarkModeToggle from "./dark.mode.toggle";
+import PrimaryButton from "./primary.button";
 
 interface MobileNavProps {
     items: MainNavItem[];
@@ -23,7 +25,6 @@ export function MobileNav({ items, children }: MobileNavProps) {
             }
         >
             <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
-                <Logo />
                 <nav className="grid grid-flow-row auto-rows-max text-sm">
                     {items.map((item, index) => (
                         <Link
@@ -34,8 +35,13 @@ export function MobileNav({ items, children }: MobileNavProps) {
                             {t(item.textKey)}
                         </Link>
                     ))}
+                    <div className="flex space-x-4 ml-auto">
+                        <LocaleToggle />
+                        <DarkModeToggle />
+                        <PrimaryButton text="Donate" />
+                    </div>
                 </nav>
-                {children}
+
             </div>
         </div>
     );

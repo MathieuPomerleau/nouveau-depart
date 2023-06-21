@@ -44,14 +44,12 @@ export default async function LocaleLayout({
                     messages={messages}
                 >
                     <div className="flex min-h-screen flex-col">
-                        <header className="sticky top-0 z-40 w-full bg-gradient-to-b from-light-tint/[0.94] dark:from-dark-tint/[0.94] from-70% to-transparent transition-all ">
-                            <div className="container flex h-32 space-x-4 sm:justify-between max-w-[72rem] mx-auto sm:space-x-0">
+                        <header className="sticky top-0 z-40 w-full">
+                            <div className="absolute w-full py-4 px-12 bg-white/95 dark:bg-dark-tint/95 border-b border-b-black/10 dark:border-b-white/10 transition-all">
                                 <MainNav items={navItems} params={params} />
                             </div>
                         </header>
-                        <div className="container flex-1 max-w-[84rem] mx-auto">
-                            {children}
-                        </div>
+                        {children}
                     </div>
                 </NextIntlClientProvider>
             </body>
